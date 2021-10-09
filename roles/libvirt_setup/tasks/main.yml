@@ -1,6 +1,13 @@
 ---
 # tasks file for libvirt_setup
 
+- name: Enable IP Forwarding
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_file: "/etc/sysctl.d/{{ libvirt_ip_forward_filename }}"
+    state: present
+
 - name: install required packages to setup the libvirt host
   package:
     name: "{{ libvirt_host_packages }}"

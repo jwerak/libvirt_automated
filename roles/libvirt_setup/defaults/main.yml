@@ -1,2 +1,3 @@
 ---
 # defaults file for libvirt_setup
+libvirt_sysctl_ip_forward_filename: "99-ipforward.conf"
