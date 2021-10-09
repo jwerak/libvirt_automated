@@ -1,0 +1,5 @@
+<network>
+    <name>{{ libvirt_setup_network.name }}</name>
+    <forward mode="bridge" />
+    <bridge name="{{ libvirt_setup_network.bridge_name }}" />
+</network>

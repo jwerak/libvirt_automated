@@ -5,7 +5,7 @@
   ansible.posix.sysctl:
     name: net.ipv4.ip_forward
     value: '1'
-    sysctl_file: "/etc/sysctl.d/{{ libvirt_ip_forward_filename }}"
+    sysctl_file: "/etc/sysctl.d/{{ libvirt_setup_sysctl_ip_forward_filename }}"
     state: present
 
 - name: install required packages to setup the libvirt host
@@ -18,3 +18,11 @@
     name: libvirtd
     enabled: true
     state: started
+
+- name: Create Bridge Network in Libvirt
+  community.libvirt.virt_net:
+    command: define
+    name: bridge-network
+    xml: '{{ lookup("template", "network.xml.j2") }}'
+    state: active
+    autostart: true
