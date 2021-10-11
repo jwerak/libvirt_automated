@@ -2,6 +2,9 @@
 # defaults file for libvirt_setup
 libvirt_setup_sysctl_ip_forward_filename: "99-ipforward.conf"
 
-libvirt_setup_network:
-  name: bridge-network
-  bridge_name: bridge0
+libvirt_setup_network: {}
+
+# Can be used to set additional network
+# libvirt_setup_network:
+  # name: bridge-network
+  # bridge_name: bridge0

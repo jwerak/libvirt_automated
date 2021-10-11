@@ -1,6 +1,4 @@
 ---
-# tasks file for libvirt_setup
-
 - name: Enable IP Forwarding
   ansible.posix.sysctl:
     name: net.ipv4.ip_forward
@@ -19,10 +17,22 @@
     enabled: true
     state: started
 
-- name: Create Bridge Network in Libvirt
-  community.libvirt.virt_net:
-    command: define
-    name: bridge-network
-    xml: '{{ lookup("template", "network.xml.j2") }}'
-    state: active
-    autostart: true
+- name: Create and configure optional network
+  when: libvirt_setup_network.name is defined
+  block:
+    - name: Define Bridge Network in Libvirt
+      community.libvirt.virt_net:
+        command: define
+        name: "{{ libvirt_setup_network.name }}"
+        xml: '{{ lookup("template", "network.xml.j2") }}'
+
+    - name: Create Bridge Network in Libvirt
+      community.libvirt.virt_net:
+        command: create
+        name: "{{ libvirt_setup_network.name }}"
+        state: active
+
+    - name: Bridge Network in Libvirt is set to Autostart
+      community.libvirt.virt_net:
+        name: "{{ libvirt_setup_network.name }}"
+        autostart: true
