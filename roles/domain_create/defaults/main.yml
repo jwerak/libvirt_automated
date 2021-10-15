@@ -27,6 +27,15 @@ virt_dom_network_hostif: "eth0"
 virt_dom_network_model: "virtio"
 virt_dom_network_type: "direct"
 virt_dom_network_mac: "52:54:00:af:bb:59"
+virt_dom_network_bootproto: "dhcp"
+
+# Configure Static network
+# virt_dom_network_bootproto: "static"
+# virt_dom_network_static_options:
+#   ip: "192.168.0.200"
+#   netmask: "255.255.255.0"
+#   gateway: "10.0.2.254"
+#   nameserver: "10.0.2.1"
 
 virt_dom_os_type: "Linux"
 virt_dom_os_variant: "rhel7.9"
@@ -44,18 +53,11 @@ virt_dom_os_password_crypted: false
 
 # short name to uniquely identify LVM's system PV and VG
 virt_dom_os_fs: rhel
+
 # list of file systems:
 virt_dom_os_file_systems:
-- mount: /
-  type: xfs
-  name: Root
-  size: 5120
-  label: ROOTFS
-#- mount: /var
-#  type: xfs
-#  name: Home
-#  size: 20480
-#  maxsize: "{{ (virt_dom_disk_size | int * 1024 / 2) | int }}"  # we try to keep some disk space free
-#  label: VARFS
-#  grow: true
-
+  - mount: /
+    type: xfs
+    name: Root
+    size: 5120
+    label: ROOTFS

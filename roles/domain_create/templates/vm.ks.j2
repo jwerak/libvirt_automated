@@ -14,8 +14,12 @@ keyboard --vckeymap=us --xlayouts='us'
 lang en_US.UTF-8
 
 # Network information
-network  --bootproto=dhcp --device=link --ipv6=auto --activate
-network  --hostname="{{ virt_dom_os_hostname }}"
+{% if virt_dom_network_bootproto == "dhcp" %}
+network --bootproto=dhcp --device=link --ipv6=auto --activate
+{% elif virt_dom_network_bootproto == "static" %}
+network --bootproto=static --ip={{ virt_dom_network_static_options.ip }} --netmask={{ virt_dom_network_static_options.netmask }} --gateway={{ virt_dom_network_static_options.gateway }} --nameserver={{ virt_dom_network_static_options.nameserver }}
+{% endif %}
+network --hostname="{{ virt_dom_os_hostname }}"
 
 {% if 'rhel8' in virt_dom_os_variant %}
 repo --name="AppStream" --baseurl=file:///run/install/repo/AppStream
