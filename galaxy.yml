@@ -3,7 +3,9 @@
 # The namespace of the collection. This can be a company/brand/organization or product namespace under which all
 # content lives. May only contain alphanumeric lowercase characters and underscores. Namespaces cannot start with
 # underscores or numbers and cannot contain consecutive underscores
-namespace: ericzolf
+# Inspired by:
+# namespace: ericzolf
+namespace: jwerak
 
 # The name of the collection. Has the same character restrictions as 'namespace'
 name: libvirt_automated
@@ -18,6 +20,7 @@ readme: README.md
 # @nicks:irc/im.site#channel'
 authors:
 - Eric L. <ewl+github@lavar.de>
+- Jakub V.
 
 
 ### OPTIONAL but strongly recommended
@@ -45,13 +48,13 @@ tags: [libvirt,vm,domain,virtual_machines]
 dependencies: {}
 
 # The URL of the originating SCM repository
-repository: https://github.com/ericzolf/libvirt_automated
+repository: https://github.com/jwerak/libvirt_automated
 
 # The URL to any online docs
-documentation: https://github.com/ericzolf/libvirt_automated
+documentation: https://github.com/jwerak/libvirt_automated
 
 # The URL to the homepage of the collection/project
-homepage: https://github.com/ericzolf/libvirt_automated
+homepage: https://github.com/jwerak/libvirt_automated
 
 # The URL to the collection issue tracker
-issues: https://github.com/ericzolf/libvirt_automated/issues
+issues: https://github.com/jwerak/libvirt_automated/issues
