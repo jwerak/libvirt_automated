@@ -1,21 +1,42 @@
 ---
-
-- name: define the full path to the kickstart file
-  set_fact:
-    virt_dom_os_ks_path: "{{ libvirt_temp_dir }}/{{ virt_dom_name }}/{{ virt_dom_os_kickstart | basename }}"
-
-- name: create directory to kickstart file on the libvirt host
-  file:
-    state: directory
-    dest: "{{ virt_dom_os_ks_path | dirname }}"
+- name: Check if base OS image is downloaded
+  stat:
+    path: "/tmp/{{ base_image_name }}"
+  register: virt_image_state
   delegate_to: "{{ libvirt_host }}"
 
-- name: TODO do something nifty about the ISO to copy/pull it
-  debug:
-    msg: for now we assume it's already available at '{{ virt_dom_os_iso }}'
+- name: Download base image
+  when: not virt_image_state.stat.exists  
+  get_url:
+    url: "{{ base_image_url }}"
+    dest: "/tmp/{{ base_image_name }}"
+    checksum: "sha256:{{ base_image_sha }}"
+  delegate_to: "{{ libvirt_host }}"
 
-- name: create the kickstart file from the kickstart template
-  template:
-    src: "{{ virt_dom_os_kickstart }}.j2"
-    dest: "{{ virt_dom_os_ks_path }}"
+- name: Copy ssh pub key to libvirt host
+  when: ssh_pub_key | length > 0
+  copy:
+    dest: "{{ ssh_pub_key_libvirt_host_file }}"
+    content: "{{ ssh_pub_key }}"
+    mode: 0400
+  delegate_to: "{{ libvirt_host }}"
+
+- name: Copy base image to libvirt directory
+  copy:
+    dest: "{{ libvirt_pool_dir }}/{{ vm_name }}.qcow2"
+    src: "/tmp/{{ base_image_name }}"
+    force: no
+    remote_src: yes 
+    mode: 0660
+  register: copy_results
+  delegate_to: "{{ libvirt_host }}"
+
+- name: Configure the image
+  when: copy_results is changed
+  command: |
+    virt-customize -a {{ libvirt_pool_dir }}/{{ vm_name }}.qcow2 \
+    --hostname {{ vm_name }} \
+    --root-password password:{{ vm_root_pass }} \
+    --ssh-inject 'root:file:{{ ssh_pub_key_libvirt_host_file }}' \
+    --uninstall cloud-init --selinux-relabel
   delegate_to: "{{ libvirt_host }}"

@@ -6,3 +6,5 @@ libvirt_host_packages:
 - libvirt
 - virt-install
 - python3-libvirt
+- guestfs-tools
+- libguestfs-tools
