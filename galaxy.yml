@@ -4,14 +4,14 @@
 # content lives. May only contain alphanumeric lowercase characters and underscores. Namespaces cannot start with
 # underscores or numbers and cannot contain consecutive underscores
 # Inspired by:
-# namespace: ericzolf
+# namespace: ericzolf.libvirt_automated
 namespace: jwerak
 
 # The name of the collection. Has the same character restrictions as 'namespace'
-name: libvirt_automated
+name: libvirt_manage
 
 # The version of the collection. Must be compatible with semantic versioning
-version: 0.0.5
+version: 0.0.6
 
 # The path to the Markdown (.md) readme file. This path is relative to the root of the collection
 readme: README.md
@@ -58,3 +58,5 @@ homepage: https://github.com/jwerak/libvirt_automated
 
 # The URL to the collection issue tracker
 issues: https://github.com/jwerak/libvirt_automated/issues
+
+build_ignore: []

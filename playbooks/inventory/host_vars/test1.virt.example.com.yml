@@ -1,4 +1,0 @@
----
-# variables file for test1
-virt_dom_description: '{ description: "first example host", index: 1 }'
-virt_dom_disk_size: 12

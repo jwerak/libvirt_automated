@@ -1,0 +1,19 @@
+---
+libvirt_domain_state: running
+libvirt_domain_undefine: false
+
+libvirt_domain_name: f34-dev
+libvirt_domain_vcpus: 1
+libvirt_domain_ram_mb: 1024
+libvirt_domain_network: default
+libvirt_domain_root_pass: test123
+
+libvirt_domain_base_image_name: Fedora-Cloud-Base-34-1.2.x86_64.qcow2
+libvirt_domain_base_image_url: https://download.fedoraproject.org/pub/fedora/linux/releases/34/Cloud/x86_64/images/{{ base_image_name }}
+libvirt_domain_base_image_sha: b9b621b26725ba95442d9a56cbaa054784e0779a9522ec6eafff07c6e6f717ea
+libvirt_domain_pool_dir: "/var/lib/libvirt/images"
+libvirt_domain_cleanup_tmp: no
+libvirt_domain_ssh_pub_key_libvirt_host_file: /tmp/id_rsa.pub
+libvirt_domain_ssh_pub_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHwsZxASir/qUm4FCX+YY152oUGD9noMd42F21TNQk51
+
+libvirt_domain_libvirt_host: loki

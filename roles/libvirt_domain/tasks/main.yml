@@ -1,0 +1,41 @@
+---
+- name: gather list of already existing VMs
+  community.libvirt.virt:
+    command: list_vms
+  register: __virtlist
+  delegate_to: "{{ libvirt_domain_libvirt_host }}"
+  check_mode: false
+
+- name: Create Libvirt Domain if required
+  when: 
+    - libvirt_domain_name not in __virtlist.list_vms 
+    - libvirt_domain_state == 'running'
+  block:
+    - name: Prepare VM domain 
+      import_tasks: virt_prepare.yml
+
+    - name: Define vm {{ libvirt_domain_name }}
+      when: libvirt_domain_name not in __virtlist.list_vms
+      community.libvirt.virt:
+        command: define
+        xml: "{{ lookup('template', 'vm-template.xml.j2') }}"
+      delegate_to: "{{ libvirt_domain_libvirt_host }}"
+
+- name: make sure the Domain {{ libvirt_domain_name }} is in state {{ libvirt_domain_state }}
+  community.libvirt.virt:
+    name: "{{ libvirt_domain_name }}"
+    state: "{{ libvirt_domain_state }}"
+  delegate_to: "{{ libvirt_domain_libvirt_host }}"
+  register: __vm_state_results
+  until: "__vm_state_results is success"
+  retries: 15
+  delay: 2
+
+- name: undefine domain {{ libvirt_domain_state }}
+  when:
+    - libvirt_domain_name in __virtlist.list_vms 
+    - libvirt_domain_undefine | bool
+  community.libvirt.virt:
+    name: "{{ libvirt_domain_name }}"
+    command: undefine
+  delegate_to: "{{ libvirt_domain_libvirt_host }}"

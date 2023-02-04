@@ -1,6 +1,0 @@
----
-plugin: ericzolf.libvirt_automated.libvirt_inv
-dom_filter: '^ansible_'
-prefix_desc_vars: true
-#var_prefix: ''
-#take_ip: false

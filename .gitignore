@@ -1,3 +1,6 @@
+# IDE stuff
+.vscode
+
 # ignore built collection
 *.tar.gz
 

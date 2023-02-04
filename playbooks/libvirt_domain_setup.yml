@@ -1,0 +1,10 @@
+---
+# Example of usage to setup libvirt host:
+# ansible-runner run -i inventory libvirt_domain_setup.yml
+
+- name: setup the libvirt hosts for libvirt automation
+  hosts: libvirt_hosts
+  gather_facts: false
+  become: true
+  roles:
+    - jwerak.libvirt_automated.libvirt_setup

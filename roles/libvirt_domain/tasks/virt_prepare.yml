@@ -1,0 +1,42 @@
+---
+- name: Check if base OS image is downloaded
+  stat:
+    path: "/tmp/{{ libvirt_domain_base_image_name }}"
+  register: __virt_image_state
+  delegate_to: "{{ libvirt_domain_libvirt_host }}"
+
+- name: Download base image
+  when: not __virt_image_state.stat.exists  
+  get_url:
+    url: "{{ libvirt_domain_base_image_url }}"
+    dest: "/tmp/{{ libvirt_domain_base_image_name }}"
+    checksum: "sha256:{{ libvirt_domain_base_image_sha }}"
+  delegate_to: "{{ libvirt_domain_libvirt_host }}"
+
+- name: Copy ssh pub key to libvirt host
+  when: ssh_pub_key | length > 0
+  copy:
+    dest: "{{ libvirt_domain_ssh_pub_key_libvirt_host_file }}"
+    content: "{{ libvirt_domain_ssh_pub_key }}"
+    mode: 0400
+  delegate_to: "{{ libvirt_domain_libvirt_host }}"
+
+- name: Copy base image to libvirt directory
+  copy:
+    dest: "{{ libvirt_domain_libvirt_pool_dir }}/{{ libvirt_domain_name }}.qcow2"
+    src: "/tmp/{{ libvirt_domain_base_image_name }}"
+    force: no
+    remote_src: yes 
+    mode: 0660
+  register: copy_results
+  delegate_to: "{{ libvirt_domain_libvirt_host }}"
+
+- name: Configure the image
+  when: copy_results is changed
+  command: |
+    virt-customize -a {{ libvirt_domain_libvirt_pool_dir }}/{{ libvirt_domain_name }}.qcow2 \
+    --hostname {{ libvirt_domain_name }} \
+    --root-password password:{{ libvirt_domain_root_pass }} \
+    --ssh-inject 'root:file:{{ slibvirt_domain_sh_pub_key_libvirt_host_file }}' \
+    --uninstall cloud-init --selinux-relabel
+  delegate_to: "{{ libvirt_domain_libvirt_host }}"
