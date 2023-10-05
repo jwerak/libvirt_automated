@@ -3,8 +3,8 @@
 # ansible-runner run -i inventory libvirt_domain_create.yml
 
 - name: Create Example VM
-  hosts: test_vms
+  hosts: all
   gather_facts: false
   become: true
   roles:
-    - jwerak.libvirt_manage.libvirt_domain
+    - jwerak.libvirt_automated.libvirt_domain
