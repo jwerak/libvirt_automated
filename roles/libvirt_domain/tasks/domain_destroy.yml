@@ -1,23 +1,22 @@
 ---
-- name: gather list of still existing VMs
-  virt:
+- name: Gather list of still existing VMs
+  community.libvirt.virt:
     command: list_vms
   register: virtlist
-  delegate_to: "{{ libvirt_host }}"
+  delegate_to: "{{ libvirt_domain_libvirt_host }}"
 
 - name: destroy/shutdown the existing VM if necessary
-  virt:
-    name: "{{ virt_dom_name }}"
-    state: "{{ virt_dom_state }}"
-  delegate_to: "{{ libvirt_host }}"
-  when: virt_dom_name in virtlist.list_vms
+  when: libvirt_domain_name in virtlist.list_vms
+  community.libvirt.virt:
+    name: "{{ libvirt_domain_name }}"
+    state: "{{ libvirt_domain_virt_dom_state }}"
+  delegate_to: "{{ libvirt_domain_libvirt_host }}"
 
 - name: remove the VM if wished (potentially with storage)
-  command: >
-    virsh undefine
-    {% if virt_dom_remove_storage %}--remove-all-storage{% endif %}
-    --domain {{ virt_dom_name }}
-  delegate_to: "{{ libvirt_host }}"
   when:
-    - virt_dom_name in virtlist.list_vms
-    - virt_dom_undefine | bool
+    - libvirt_domain_name in virtlist.list_vms
+  ansible.builtin.command: >
+    virsh undefine
+    {% if libvirt_domain_virt_dom_remove_storage %}--remove-all-storage{% endif %}
+    --domain {{ libvirt_domain_name }}
+  delegate_to: "{{ libvirt_domain_libvirt_host }}"

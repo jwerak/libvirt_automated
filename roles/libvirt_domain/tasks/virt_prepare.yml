@@ -37,6 +37,6 @@
     virt-customize -a {{ libvirt_domain_pool_dir }}/{{ libvirt_domain_name }}.qcow2 \
     --hostname {{ libvirt_domain_name }} \
     --root-password password:{{ libvirt_domain_root_pass }} \
-    --ssh-inject 'root:file:{{ libvirt_domain_sh_pub_key_libvirt_host_file }}' \
+    --ssh-inject 'root:file:{{ libvirt_domain_ssh_pub_key_libvirt_host_file }}' \
     --uninstall cloud-init --selinux-relabel
   delegate_to: "{{ libvirt_domain_libvirt_host }}"

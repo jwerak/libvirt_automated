@@ -11,4 +11,4 @@ virt_dom_state: destroyed  # or shutdown ?
 # remove/wipe the VM
 virt_dom_undefine: false
 # remove/wipe also the storage attached to the VM
-virt_dom_remove_storage: false 
+virt_dom_remove_storage: false

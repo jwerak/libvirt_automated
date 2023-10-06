@@ -20,3 +20,5 @@ libvirt_domain_ssh_pub_key_libvirt_host_file: /tmp/id_rsa.pub
 libvirt_domain_ssh_pub_key: ""
 
 libvirt_domain_libvirt_host: localhost
+
+libvirt_domain_virt_dom_remove_storage: false

@@ -8,7 +8,7 @@ libvirt_domain_ram_mb: 2048
 libvirt_domain_network: default
 libvirt_domain_root_pass: test123
 
-libvirt_domain_base_image_name: rhel-9.2-x86_64-kvm.qcow2
+libvirt_domain_base_image_name: rhel9.qcow2
 # libvirt_domain_base_image_url: https://download.fedoraproject.org/pub/fedora/linux/releases/34/Cloud/x86_64/images/{{ libvirt_domain_base_image_name }}
 libvirt_domain_base_image_sha: 34ff41b5274692c984e3860b21136af8b6ae502744c6c7578dda82002fba0287
 libvirt_domain_pool_dir: /var/lib/libvirt/images
